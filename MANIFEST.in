@@ -1,0 +1,18 @@
+include AUTHORS.rst
+include CONTRIBUTING.rst
+include HISTORY.rst
+include LICENSE
+include README.md
+recursive-include . sdfNNPConfAnalysis.pl
+
+recursive-include tests *
+recursive-include data *
+recursive-include nnp *
+recursive-include ANI *
+recursive-include demo *
+recursive-include scripts *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+
+recursive-include tOpt *.ini
+recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif

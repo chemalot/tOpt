@@ -1,0 +1,48 @@
+
+  -OEChem-11141913402D
+
+  2  1  0     0  0  0  0  0  0999 V2000
+   -0.0703   -0.0703   -0.0703 N   0  0  0  0  0  0  0  0  0  0  0  0
+   -0.0703   -0.0703   -0.0703 N   0  0  0  0  0  0  0  0  0  0  0  0
+  1  2  3  0  0  0  0
+M  END
+> <d>
+0.90
+
+> <NNP_Energy_kcal_mol>
+5.0
+
+> <NNP_Energy_status>
+Status.GRADIENT_CONVERGED, Status.GEOMETRY_CONVERGED, Status.ENERGY_CONVERGED, Status.ALL_CONVERGED
+
+> <NNP_STEPS>
+10
+
+> <NNP_Energy_stdev_kcal_mol>
+5.0
+
+$$$$
+
+  -OEChem-11141913402D
+
+  2  1  0     0  0  0  0  0  0999 V2000
+   -0.0703   -0.0703   -0.0703 N   0  0  0  0  0  0  0  0  0  0  0  0
+   -0.0703   -0.0703   -0.0703 N   0  0  0  0  0  0  0  0  0  0  0  0
+  1  2  3  0  0  0  0
+M  END
+> <d>
+1.0
+
+> <NNP_Energy_kcal_mol>
+5.0
+
+> <NNP_Energy_status>
+Status.GRADIENT_CONVERGED, Status.GEOMETRY_CONVERGED, Status.ENERGY_CONVERGED, Status.ALL_CONVERGED
+
+> <NNP_STEPS>
+10
+
+> <NNP_Energy_stdev_kcal_mol>
+5.0
+
+$$$$
