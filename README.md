@@ -16,7 +16,7 @@ To use this with the ANI Neural net Potential (NNP):
    - install [ASE ANI](https://github.com/isayev/ASE_ANI) and ensure that it runs 
      correctly including the pyton interface (nerurochem package)
      
-   - install the [cddlib](??) package 
+   - install the [cddlib](i..cddlib) package 
 
    - download(git clone) this source code
 

@@ -43,7 +43,7 @@ setup(
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
-    url='git@github.roche.com:albertgo/tOpt.git',
+    url='git@github.com:chemalot/tOpt.git',
     version='0.1.0',
     zip_safe=False,
 )
