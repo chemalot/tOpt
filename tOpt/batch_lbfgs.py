@@ -369,14 +369,14 @@ class BatchLBFGS():
         minE_no_constraints = energy_helper.energy_no_constraint().detach().clone()
         min_std = torch.full_like(minE_no_constraints, -1)
         st.flat_grad = energy_helper.compute_grad().reshape(st.n_confs,-1)
-        min_grad_square_max = torch.full((n_total_confs,), 9e20, dtype=min_loss.dtype, device=self.device)
+        min_grad_square_max = torch.full((n_total_confs,), 9e20, dtype=a_coords.dtype, device=self.device)
         #st.abs_grad_sum = st.flat_grad.abs().sum(1)
         
         status      = torch.zeros((n_total_confs,),dtype=torch.uint8, device=self.device)
         is_active   = torch.ones((n_total_confs,), dtype=torch.uint8, device=self.device).bool()
         conf_steps  = torch.full((n_total_confs,), -1, dtype=torch.int16, device=self.device)
         minE_coords = a_coords.detach().clone()
-        minE_grad   = torch.full((n_total_confs,n_atoms*3), -999, dtype=minE_coords.dtype, device=self.device)
+        minE_grad   = torch.full((n_total_confs,n_atoms*3), -999, dtype=a_coords.dtype, device=self.device)
         
         current_evals = 1
         func_evals += 1
@@ -425,7 +425,7 @@ class BatchLBFGS():
                 al = torch.zeros((self.history_size,st.n_confs), dtype=loss.dtype, device=self.device)
                 
                 num_old = st.old_dirs.count_hist.max()
-#                 log.debug("old_dirs {}\n{}".format(num_old, old_dirs.container[0:num_old]))
+#                 log.debug("old_dirs {}\n{}".format(num_old, st.old_dirs.container[0:num_old]))
                 
                 q = st.flat_grad.neg()
                 for i in range(num_old):

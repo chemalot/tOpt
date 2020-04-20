@@ -19,7 +19,7 @@ import time
 import logging
 from tOpt.opt_util import OPT_HARM_CONSTRAINT_TAG, ConvergenceOpts,\
     OPT_ENERGY_TAG, OPT_STATUS_TAG, OPT_STEPS, OPT_STD_TAG, OPT_FORCE_TAG,\
-    Status
+    Status, DEFAULT_CONVERGENCE_OPTS
 from tOpt.coordinates_batch import SameSizeCoordsBatch
 from tOpt.batch_lbfgs import BatchLBFGS
 from tOpt.abstract_NNP_computer import AbstractNNPComputer
@@ -43,7 +43,7 @@ class BatchOptimizer(object):
         only work on batches of consecutive molecules with the same atom count.        
     """
     def __init__(self, nnp_computer:AbstractNNPComputer, molInStream:Iterable[Type[BaseMol]], 
-                 maxiter: int = 200, 
+                 conv_opts:ConvergenceOpts = DEFAULT_CONVERGENCE_OPTS, 
                  learn_rate: float = 0.3,
                  constraint: str = None,  
                  harm_constr: Sequence[float] = None,
@@ -56,7 +56,7 @@ class BatchOptimizer(object):
             ---------
             nnp_computer: engine to compute energies and gradient
             molInStream: iterator over input molecules
-            maxiter: maximum number of geometry optimization interations
+            conv_opts: convergence parameters for terminating optimization
             learn_rate initial learning rate
             constraint: currently None|"heavyAtom"
             harm_contraint: harmonic constraint pulling back to initial coordinates in [kcal/mol/a^2]
@@ -69,7 +69,7 @@ class BatchOptimizer(object):
         """
         self.molIn = iterate.PushbackIterator(molInStream)
         self.learn_rate = learn_rate
-        self.maxiter = maxiter
+        self.conv_opts = conv_opts
         self.constraint = constraint 
         self.harm_constr = harm_constr
         self.n_harm = 1 if not harm_constr else len(harm_constr)
@@ -186,10 +186,9 @@ class BatchOptimizer(object):
     
         coordsBatch.collectConformers(True, self.device)
         
-        conv_opts = ConvergenceOpts(max_iter=self.maxiter, max_it_without_decrease=min(40,self.maxiter/5))
         p_name = self.plot_name
         if p_name: p_name += str(self.countBatch)
-        optimizer = BatchLBFGS(lr=self.learn_rate, convergence_opts=conv_opts, line_search_fn=self.line_search,
+        optimizer = BatchLBFGS(lr=self.learn_rate, convergence_opts=self.conv_opts, line_search_fn=self.line_search,
                            history_size=self.lbfgs_hist_size,
                            prune_high_energy_freq=self.prune_high_energy_freq, prune_high_energy_fract=self.prune_high_energy_fract,
                            plot_name=p_name, device=self.device)

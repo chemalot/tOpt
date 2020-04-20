@@ -149,7 +149,6 @@ class ANIComputer(AbstractNNPComputer):
                 """
                 self._mol_batch    = mols
                 self._std_batch    = None
-                self._range_batch  = None
                 self._energy_batch = None
                 self._force_batch  = None
                 self._curentMol = 0
@@ -186,14 +185,12 @@ class ANIComputer(AbstractNNPComputer):
                 self._force_batch  = np.mean(forces,axis=0)   # Hartree / A
                 if nnpCmptr.compute_stdev: 
                     self._std_batch = np.std(energies,ddof=1, axis=0)
-                    self._range_batch = np.amax(energies, axis=0) - np.amin(energies, axis=0)
                 
                                 
                 if self.nnpCmptr.eFactor != 1.:
                     self._energy_batch *= self.nnpCmptr.eFactor
                     if nnpCmptr.compute_stdev: 
                         self._std_batch    *= self.nnpCmptr.eFactor
-                        self._range_batch  *= self.nnpCmptr.eFactor
                 if self.nnpCmptr.fFactor != 1.:
                     self._force_batch  *= self.nnpCmptr.fFactor
 
@@ -212,9 +209,8 @@ class ANIComputer(AbstractNNPComputer):
                 e    = self._energy_batch[self._curentMol]
                 if self.nnpCmptr.compute_stdev:
                     std = self._std_batch[self._curentMol]
-                    rng = self._range_batch[self._curentMol]
                 else:
-                    std = rng = None
+                    std = None
                     
                 grad = None
                 if self.outputGrads:
@@ -223,7 +219,7 @@ class ANIComputer(AbstractNNPComputer):
                 self._curentMol += 1
                 log.debug("coodsA=%s e=%.6f g=%s [%s]"%(
                      mol.coordinates.reshape(-1),e,grad,self.nnpCmptr.energyOutUnits))
-                return mol,e,std,rng,grad
+                return mol,e,std,grad
             
         return ComputeResultIterator(self, mols)
 

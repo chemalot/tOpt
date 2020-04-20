@@ -2,6 +2,7 @@ from typing import Sequence
 import numpy as np
 import torch
 from torch import nn
+from cddlib.chem.mol import BaseMol
 
 
 class SameSizeCoordsBatch(object):
@@ -26,11 +27,12 @@ class SameSizeCoordsBatch(object):
         self.allowed_atom_num = frozenset(allowed_atom_num)
         self.dtype           = dtype
 
-#     def addConformerMol(self, mol:BaseMol) -> None:
-#         xyz = mol.coordinates
-#         atomTypes = np.array(mol.atom_types, dtype=np.int64)
-#         
-#         self.addConformer(xyz, atomTypes)
+
+    def addConformerMol(self, mol:BaseMol) -> None:
+        xyz = mol.coordinates
+        atomTypes = np.array(mol.atom_types, dtype=np.int64)
+         
+        self.addConformer(xyz, atomTypes)
         
         
     def addConformer(self, xyz:np.ndarray, atomic_nums:np.ndarray):
