@@ -16,7 +16,7 @@ To use this with the ANI Neural net Potential (NNP):
    - install [ASE ANI](https://github.com/isayev/ASE_ANI) and ensure that it runs 
      correctly including the pyton interface (nerurochem package)
      
-   - install the [cddlib](https://github.com/chemalot/cddlib) package 
+   - install the [cddlib](??) package 
 
    - download(git clone) this source code
 
@@ -37,6 +37,9 @@ To use this with the ANI Neural net Potential (NNP):
      ```bash
       sdfANIOptimizer.py -in data/C2H6.sdf -out C2H6.ani.sdf -conf $ANICONF -computeForce
      ```
+     Note: a further explaination of the command line options is provided by executing sdfANIOptimizer.py with the -h option.
+
+     To allow sdfANIOptimizer.py to optimize conformers in parallel on the GPU the input file needs to be grouped by atom count. (For ASE_ANI the input compounds also need to be grouped so that the sequence of atom type is identical). Every time a conformation with a different number of atom is encountered the optimization must wait for the previous batch to complete.
 
 
 ## Use with other pytorch based NNP's

@@ -28,6 +28,7 @@ from cddlib.chem.io import get_mol_input_stream, get_mol_output_stream
 from tOpt.batch_optimizer import BatchOptimizer
 import logging
 from tOpt.NNP_computer_factory import ExampleNNPComputerFactory, NNPComputerFactoryInterface
+from tOpt.opt_util import ConvergenceOpts
 log = logging.getLogger(__name__)
 
 TESTRUN = 0
@@ -77,6 +78,9 @@ def main(nnp_comput_factory:NNPComputerFactoryInterface = ExampleNNPComputerFact
 
     # Process arguments
     args = parser.parse_args()
+    if not args.inFile: args.inFile = ".sdf"
+    if not args.outFile: args.outFile = ".sdf"
+
 
     inFile          = args.inFile
     outFile         = args.outFile
@@ -101,10 +105,12 @@ def main(nnp_comput_factory:NNPComputerFactoryInterface = ExampleNNPComputerFact
     nnp_computer = nnp_factory.createNNP(True, True, **vars(args))
     if harm_constr:
         harm_constr = [ float(v) for v in harm_constr.split(",")]
-     
+        
+    conv_opts = ConvergenceOpts(max_iter=maxiter, max_it_without_decrease=min(40,maxiter/5))
+        
     with get_mol_output_stream(outFile) as out, \
          get_mol_input_stream(inFile) as molS,  \
-         BatchOptimizer(nnp_computer, molS, maxiter, learn_rate=trust, lbfgs_hist_size=lbfgs_hist_size,
+         BatchOptimizer(nnp_computer, molS, conv_opts, learn_rate=trust, lbfgs_hist_size=lbfgs_hist_size,
                         constraint=constraint, harm_constr=harm_constr,
                         prune_high_energy_freq=prune_high_energy_freq, prune_high_energy_fract=prune_high_energy_fract,
                         line_search=line_search, out_grad=out_grad, plot_name=plot_name) as sdfOptizer:

@@ -13,10 +13,10 @@ import os
 import errno
 from abc import ABCMeta
 from abc import abstractmethod
+import torch
+
 from tOpt.unit_conversion import Units
 from tOpt.pytorch_computer import PytorchComputer
-from ase.data.g2_1_ref import atomization
-import torch
 from tOpt.abstract_NNP_computer import AbstractNNPComputer
 
 log = logging.getLogger(__name__)
