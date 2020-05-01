@@ -11,7 +11,14 @@ Loading pyNeuroChem after pytorch causes a mysterious crash
 
 '''
 
-import pyNeuroChem as neuro
+import warnings
+
+try:
+    import pyNeuroChem as neuro
+except ImportError:
+    warnings.warn('pyNeuroChem module not found!')
+    pass
+
 import sys
 from tOpt import sdf_multi_optimizer
 from tOpt.NNP_computer_factory import ExampleNNPComputerFactory
