@@ -101,7 +101,7 @@ class ExampleNNPComputerFactory(NNPComputerFactoryInterface):
         log.warning('Using Torchani-ANI1x model!!!!!')
 
         net = ANI1xNet()
-        atoms = [1, 6, 7, 8]
+        atoms = net.atoms
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         atomization_e = torch.tensor([0] * (max(atoms) + 1), dtype=torch.float).to(device)
 
@@ -117,7 +117,7 @@ class ExampleNNPComputerFactory(NNPComputerFactoryInterface):
         log.warning('Using Torchani-ANI2x model!!!!!')
 
         net = ANI2xNet()
-        atoms = [1, 6, 7, 8, 9, 16, 17]
+        atoms = net.atoms
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         atomization_e = torch.tensor([0] * (max(atoms) + 1), dtype=torch.float).to(device)
 
