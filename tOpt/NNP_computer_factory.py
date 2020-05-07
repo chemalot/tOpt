@@ -68,7 +68,13 @@ class ExampleNNPComputerFactory(NNPComputerFactoryInterface):
 
         elif os.path.isfile(nnpName):
             self.createNNP = self._otherNNP
-        
+
+        elif self.nnp_name == 'torchani-ani1x':
+            self.createNNP = self._ANI1xNNP
+
+        elif self.nnp_name == 'torchani-ani2x':
+            self.createNNP = self._ANI2xNNP
+
         else:
             self.createNNP = self._dummyNNP 
 
@@ -85,7 +91,39 @@ class ExampleNNPComputerFactory(NNPComputerFactoryInterface):
         return ANI_computer.ANIComputer(self.nnp_name, 
                                         outputGrad, compute_stdev, energyOutUnits=energyOutUnits)
         
-        
+
+    def _ANI1xNNP(self, outputGrad: bool, compute_stdev: bool, energyOutUnits: Units = Units.KCAL, **kwArgs):
+        """
+           just a call to use ANI2x pytorch potential
+        """
+        from tOpt.torchani_computer import ANI1xNet
+
+        log.warning('Using Torchani-ANI1x model!!!!!')
+
+        net = ANI1xNet()
+        atoms = net.atoms
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        atomization_e = torch.tensor([0] * (max(atoms) + 1), dtype=torch.float).to(device)
+
+        return PytorchComputer(net, atoms, atomization_e, outputGrad, compute_stdev, torch.float, 10, 1, False)
+
+
+    def _ANI2xNNP(self, outputGrad: bool, compute_stdev: bool, energyOutUnits: Units = Units.KCAL, **kwArgs):
+        """
+           just a call to use ANI2x pytorch potential
+        """
+        from tOpt.torchani_computer import ANI2xNet
+
+        log.warning('Using Torchani-ANI2x model!!!!!')
+
+        net = ANI2xNet()
+        atoms = net.atoms
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        atomization_e = torch.tensor([0] * (max(atoms) + 1), dtype=torch.float).to(device)
+
+        return PytorchComputer(net, atoms, atomization_e, outputGrad, compute_stdev, torch.float, 10, 1, False)
+
+
     def _dummyNNP(self, outputGrad:bool, compute_stdev:bool, energyOutUnits:Units = Units.KCAL, **kwArgs):
         """
            just a dummy pytorch potential that pulls all atom coordiantes to -0.703

@@ -445,7 +445,7 @@ class BatchLBFGS():
 #                     log.debug("{} bei {}".format(i,be_i))
                     r.add_((al[i] - be_i).reshape(-1,1) * st.old_stps.container[i])
 #                     log.debug("{} r {}".format(i,r))
-                st.d[~is_valid_step] = d_not_valid_steps
+#                 st.d[~is_valid_step] = d_not_valid_steps
 
             if st.prev_flat_grad is None:
                 st.prev_flat_grad = st.flat_grad.clone()
