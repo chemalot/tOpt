@@ -69,7 +69,9 @@ def main(nnp_comput_factory:NNPComputerFactoryInterface = ExampleNNPComputerFact
     parser.add_argument('-maxiter', type=int, default=300, help='Maximum number of optimization steps.')
     parser.add_argument('-lineSearch', type=str, default=None, choices=['Armijo', 'Wolfe'], help='Line search algorithm to be used.')
     parser.add_argument('-lbfgsHistSize', type=int, default=200, help='History size used to approximate second derivatives.')
-    parser.add_argument('-prune_high_energy', nargs=2, default=None, 
+    parser.add_argument('-mol_mem_GB', type=int, default=10, help='GB of memory available for computations.')
+    parser.add_argument('-bytes_per_mol', type=int, default=1, help='approximate bytes required for each conformation.')
+    parser.add_argument('-prune_high_energy', nargs=2, default=None,
                         help='2 arguments (freq drop_fract) every freq sycles the reamining drop_fract confs will be dropped. '
                             +'Note: this makes only sense if all conformer have the same structure.')
     parser.add_argument('-computeForce', default=False, action='store_true',

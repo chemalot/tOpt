@@ -535,13 +535,14 @@ class BatchLBFGS():
             e_decreased_idx = st.in_confIdx[a_e_decreased]
             
             # store best geometry when geom is found
-            minE_coords[e_decreased_idx] = a_coords[a_e_decreased].detach_()
-            minE_no_constraints[e_decreased_idx] = \
-                         energy_helper.energy_no_constraint()[a_e_decreased].detach_()
-            minE_grad[e_decreased_idx] = st.flat_grad[a_e_decreased].detach_()
-            min_loss [e_decreased_idx] = st.loss[a_e_decreased].detach().clone()
-            if not st.std is None: min_std[e_decreased_idx] = st.std[a_e_decreased]
-            min_grad_square_max[e_decreased_idx] = a_flat_grad_square_max[a_e_decreased]
+            if e_decreased_idx:
+                minE_coords[e_decreased_idx] = a_coords[a_e_decreased].detach_()
+                minE_no_constraints[e_decreased_idx] = \
+                            energy_helper.energy_no_constraint()[a_e_decreased].detach_()
+                minE_grad[e_decreased_idx] = st.flat_grad[a_e_decreased].detach_()
+                min_loss [e_decreased_idx] = st.loss[a_e_decreased].detach().clone()
+                if not st.std is None: min_std[e_decreased_idx] = st.std[a_e_decreased]
+                min_grad_square_max[e_decreased_idx] = a_flat_grad_square_max[a_e_decreased]
             
             dummy = n_iter - st.last_decreased >= self.convergence_opts.max_it_without_decrease
             status[st.in_confIdx[dummy]] |=   Status.ENERGY_NOT_DECREASING

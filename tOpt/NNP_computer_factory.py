@@ -100,12 +100,22 @@ class ExampleNNPComputerFactory(NNPComputerFactoryInterface):
 
         log.warning('Using Torchani-ANI1x model!!!!!')
 
+        if 'mol_mem_GB' in kwArgs:
+            mol_mem_GB = kwArgs.get("mol_mem_GB")
+        else:
+            mol_mem_GB = 10
+
+        if 'bytes_per_mol' in kwArgs:
+            bytes_per_mol = kwArgs.get("bytes_per_mol")
+        else:
+            bytes_per_mol = 1
+
         net = ANI1xNet()
         atoms = net.atoms
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         atomization_e = torch.tensor([0] * (max(atoms) + 1), dtype=torch.float).to(device)
 
-        return PytorchComputer(net, atoms, atomization_e, outputGrad, compute_stdev, torch.float, 10, 1, False)
+        return PytorchComputer(net, atoms, atomization_e, outputGrad, compute_stdev, torch.float, mol_mem_GB, bytes_per_mol, False)
 
 
     def _ANI2xNNP(self, outputGrad: bool, compute_stdev: bool, energyOutUnits: Units = Units.KCAL, **kwArgs):
@@ -116,12 +126,22 @@ class ExampleNNPComputerFactory(NNPComputerFactoryInterface):
 
         log.warning('Using Torchani-ANI2x model!!!!!')
 
+        if 'mol_mem_GB' in kwArgs:
+            mol_mem_GB = kwArgs.get("mol_mem_GB")
+        else:
+            mol_mem_GB = 10
+
+        if 'bytes_per_mol' in kwArgs:
+            bytes_per_mol = kwArgs.get("bytes_per_mol")
+        else:
+            bytes_per_mol = 1
+
         net = ANI2xNet()
         atoms = net.atoms
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         atomization_e = torch.tensor([0] * (max(atoms) + 1), dtype=torch.float).to(device)
 
-        return PytorchComputer(net, atoms, atomization_e, outputGrad, compute_stdev, torch.float, 10, 1, False)
+        return PytorchComputer(net, atoms, atomization_e, outputGrad, compute_stdev, torch.float, mol_mem_GB, bytes_per_mol, False)
 
 
     def _dummyNNP(self, outputGrad:bool, compute_stdev:bool, energyOutUnits:Units = Units.KCAL, **kwArgs):
